@@ -12,10 +12,10 @@ from google.cloud import secretmanager
 
 
 # Set the ID of the folder in your Google Drive where you want to create the sheet
-FOLDER_ID = "1U78iI19opZ5AEllJ8STJ2RCLGEzZ0a40"
+FOLDER_ID = "1U78iI1deHrsr5AEllJ8STJ2RCLGEzZ0a40"
 
 # Set the name of the sheet you want to create
-SHEET_NAME = "nms-inventory"
+SHEET_NAME = "VM-inventory"
 
 # Set the scopes for the service account
 SCOPES = ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/spreadsheets"]
@@ -23,7 +23,7 @@ SCOPES = ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/a
 #################################################################
 # Using Secret Manager
 client = secretmanager.SecretManagerServiceClient()
-name = f"projects/478062331248/secrets/sa-workflow-key/versions/1"
+name = f"projects/project_id/secrets/secret_name/versions/latest"
 #################################################################
 
 response = client.access_secret_version(name=name)
