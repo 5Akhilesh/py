@@ -20,9 +20,11 @@ SHEET_NAME = "nms-inventory"
 # Set the scopes for the service account
 SCOPES = ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/spreadsheets"]
 
-# Create credentials object from the key file dictionary
+#################################################################
+# Using Secret Manager
 client = secretmanager.SecretManagerServiceClient()
 name = f"projects/478062331248/secrets/sa-workflow-key/versions/1"
+#################################################################
 
 response = client.access_secret_version(name=name)
 creds_json = response.payload.data.decode('UTF-8')
@@ -34,12 +36,12 @@ creds = service_account.Credentials.from_service_account_info(info=creds_dict, s
 now = datetime.datetime.now()
 month_year = now.strftime("%B_%Y")
 
-# Rename the old sheet to "nms-inventory-current month"
+# Rename the old sheet to "VM-inventory-current month"
 drive_service = build("drive", "v3", credentials=creds)
-query = "name='nms-inventory'"
+query = "name='VM-inventory'"
 response = drive_service.files().list(q=query, spaces='drive', fields='files(id)').execute()
 file_id = response['files'][0]['id']
-file_metadata = {"name": "nms-inventory-" + month_year}
+file_metadata = {"name": "VM-inventory-" + month_year}
 drive_service.files().update(fileId=file_id, body=file_metadata).execute()
 print("Old sheet renamed to:", file_metadata["name"])
 
